@@ -4,14 +4,14 @@ using System.Net;
 namespace Net6SpaTemplate.WebHost.Controllers.API
 {
     [ApiController]
-    [Route("test")]
+    [Route("testing")]
     public class TestController : ControllerBase
     {
         public TestController()
         {
         }
 
-        [HttpGet("test")]
+        [HttpGet("spades")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         public IActionResult Test()
         {

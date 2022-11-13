@@ -61,9 +61,8 @@ WebApplicationBuilder ConfigureBuilder(string[] args, out bool isDevelopment)
             opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
 
-    if (isDevelopment)
-    {
-        mvc.AddRazorRuntimeCompilation();
+  
+    mvc.AddRazorRuntimeCompilation();
         webApplicationBuilder.Services.AddEndpointsApiExplorer();
         webApplicationBuilder.Services.AddOpenApiDocument(cfg =>
         {
@@ -71,7 +70,7 @@ WebApplicationBuilder ConfigureBuilder(string[] args, out bool isDevelopment)
             cfg.Description = "An Internal API for the Front End";
             cfg.Version = "1.0";
         });
-    }
+    
 
     webApplicationBuilder.Services.AddResponseCompression();
 
@@ -113,9 +112,8 @@ void ConfigureApp(WebApplication webApplication, bool isDevelopment)
         });
         webApplication.UseDeveloperExceptionPage();
         webApplication.UseSwaggerUi3();
-        webApplication.UseOpenApi();
     }
-
+    webApplication.UseOpenApi();
     webApplication.UseEndpoints(endpoints =>
     {
         endpoints.MapDefaultControllerRoute();
