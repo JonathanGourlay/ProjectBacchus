@@ -10,7 +10,7 @@
 
 export interface IClient {
 
-    test_Test(): Promise<string>;
+    test_GetReciipes(search: string | null | undefined): Promise<Recipe[]>;
 }
 
 export class Client implements IClient {
@@ -23,8 +23,10 @@ export class Client implements IClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    test_Test(): Promise<string> {
-        let url_ = this.baseUrl + "/testing/spades";
+    test_GetReciipes(search: string | null | undefined): Promise<Recipe[]> {
+        let url_ = this.baseUrl + "/Test/GetRecipies?";
+        if (search !== undefined && search !== null)
+            url_ += "search=" + encodeURIComponent("" + search) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -35,19 +37,25 @@ export class Client implements IClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processTest_Test(_response);
+            return this.processTest_GetReciipes(_response);
         });
     }
 
-    protected processTest_Test(response: Response): Promise<string> {
+    protected processTest_GetReciipes(response: Response): Promise<Recipe[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Recipe.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -55,8 +63,48 @@ export class Client implements IClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<string>(null as any);
+        return Promise.resolve<Recipe[]>(null as any);
     }
+}
+
+export class Recipe implements IRecipe {
+    images?: string;
+    links?: string;
+
+    constructor(data?: IRecipe) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.images = _data["images"];
+            this.links = _data["links"];
+        }
+    }
+
+    static fromJS(data: any): Recipe {
+        data = typeof data === 'object' ? data : {};
+        let result = new Recipe();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["images"] = this.images;
+        data["links"] = this.links;
+        return data;
+    }
+}
+
+export interface IRecipe {
+    images?: string;
+    links?: string;
 }
 
 export class SwaggerException extends Error {

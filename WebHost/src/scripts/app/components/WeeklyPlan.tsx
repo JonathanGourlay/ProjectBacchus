@@ -35,7 +35,6 @@ export const WeeklyPlan: React.FC = () => {
                                                 <th>{meal} {i}</th>
                                             )
                                         })}
-                                        {/* each meal type for monday to friday - All breakfasts for monday to sunday */}
                                     </tr>
                                 )
                             })}

@@ -6,6 +6,7 @@
 	  <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <AssemblyName>Net6SpaTemplate.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>Net6SpaTemplate.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <UserSecretsId>825d4757-064d-473f-988b-dcaf991c92de</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -73,5 +74,11 @@
     <Exec Command="$(NSwagExe_Net60) run nswag.json /variables:Configuration=$(Configuration)" />
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
+
+	<!--<Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+		<Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
+		<Exec Command="$(NSwagExe_Net60) run ../BLL/Client/food-api.nswag /variables:Configuration=$(Configuration)" />
+		<RemoveDir Directories="$(OutDir)References" />
+	</Target>-->
 
 </Project>

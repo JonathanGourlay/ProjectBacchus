@@ -1,21 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Net6SpaTemplate.BLL;
+using Net6SpaTemplate.BLL.Client;
 using System.Net;
 
 namespace Net6SpaTemplate.WebHost.Controllers.API
 {
     [ApiController]
-    [Route("testing")]
+    [Route("[controller]")]
     public class TestController : ControllerBase
     {
-        public TestController()
+        private readonly ITestFacade _testFacade;
+        public TestController(ITestFacade testFacade)
         {
+            _testFacade = testFacade;
         }
 
-        [HttpGet("spades")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        public IActionResult Test()
+        [HttpGet("GetRecipies")]
+        [ProducesResponseType(typeof(IEnumerable<BLL.Recipe>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetReciipes([FromQuery] string search)
         {
-            return Ok("Hello from the API");
+            var response = await _testFacade.GetRecipie(search);
+            return Ok(response);
         }
     }
 }
