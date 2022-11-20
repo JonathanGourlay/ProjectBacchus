@@ -1,13 +1,18 @@
-import { Client } from "@api/client"
-import { useQuery } from "@tanstack/react-query"
+import * as Client from "@api/client"
+import { useMutation, UseMutationResult, useQuery, UseQueryResult } from "@tanstack/react-query"
 import React from "react"
 import appStateContainer from "./appStateContainer"
 
-interface IUseRecipes {
+interface IUseRecipesProps {
     query: string;
 }
 
-const useRecipies = ({ query }: IUseRecipes) => {
+interface IUseRecipes {
+    searchRecipies: UseMutationResult<Client.Recipe[], unknown, string, unknown>;
+    getRecipies: UseQueryResult<Client.Recipe[], unknown>;
+}
+
+const useRecipies = ({ query }: IUseRecipesProps): IUseRecipes => {
     const { client } = appStateContainer.useContainer();
 
     // TODO: make recipies a constant key 
@@ -16,7 +21,11 @@ const useRecipies = ({ query }: IUseRecipes) => {
             return client.test_GetReciipes(query)
         }
     })
+    const searchRecipies = useMutation((query: string) => { return client.test_GetReciipes(query) })
 
-    return getRecipies
+    return {
+        searchRecipies,
+        getRecipies
+    }
 }
 export default useRecipies

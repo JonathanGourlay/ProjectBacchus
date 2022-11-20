@@ -69,7 +69,7 @@ export class Client implements IClient {
 
 export class Recipe implements IRecipe {
     images?: string;
-    links?: string;
+    recipie?: RecipieResponse | undefined;
 
     constructor(data?: IRecipe) {
         if (data) {
@@ -77,13 +77,14 @@ export class Recipe implements IRecipe {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
+            this.recipie = data.recipie && !(<any>data.recipie).toJSON ? new RecipieResponse(data.recipie) : <RecipieResponse>this.recipie;
         }
     }
 
     init(_data?: any) {
         if (_data) {
             this.images = _data["images"];
-            this.links = _data["links"];
+            this.recipie = _data["recipie"] ? RecipieResponse.fromJS(_data["recipie"]) : <any>undefined;
         }
     }
 
@@ -97,14 +98,2628 @@ export class Recipe implements IRecipe {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["images"] = this.images;
-        data["links"] = this.links;
+        data["recipie"] = this.recipie ? this.recipie.toJSON() : <any>undefined;
         return data;
     }
 }
 
 export interface IRecipe {
     images?: string;
-    links?: string;
+    recipie?: IRecipieResponse | undefined;
+}
+
+export class RecipieResponse implements IRecipieResponse {
+    recipe?: Recipe2;
+    _links?: Links;
+
+    constructor(data?: IRecipieResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.recipe = data.recipe && !(<any>data.recipe).toJSON ? new Recipe2(data.recipe) : <Recipe2>this.recipe;
+            this._links = data._links && !(<any>data._links).toJSON ? new Links(data._links) : <Links>this._links;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.recipe = _data["recipe"] ? Recipe2.fromJS(_data["recipe"]) : <any>undefined;
+            this._links = _data["_links"] ? Links.fromJS(_data["_links"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): RecipieResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new RecipieResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["recipe"] = this.recipe ? this.recipe.toJSON() : <any>undefined;
+        data["_links"] = this._links ? this._links.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IRecipieResponse {
+    recipe?: IRecipe2;
+    _links?: ILinks;
+}
+
+export class Recipe2 implements IRecipe2 {
+    uri?: string;
+    label?: string;
+    image?: string;
+    images?: Images;
+    source?: string;
+    url?: string;
+    shareAs?: string;
+    yield?: number;
+    dietLabels?: string[];
+    healthLabels?: string[];
+    cautions?: string[];
+    ingredientLines?: string[];
+    ingredients?: Ingredient[];
+    calories?: number;
+    totalWeight?: number;
+    totalTime?: number;
+    cuisineType?: string[];
+    mealType?: string[];
+    dishType?: string[];
+    totalNutrients?: TotalNutrients;
+    totalDaily?: TotalDaily;
+    digest?: Digest[];
+
+    constructor(data?: IRecipe2) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.images = data.images && !(<any>data.images).toJSON ? new Images(data.images) : <Images>this.images;
+            if (data.ingredients) {
+                this.ingredients = [];
+                for (let i = 0; i < data.ingredients.length; i++) {
+                    let item = data.ingredients[i];
+                    this.ingredients[i] = item && !(<any>item).toJSON ? new Ingredient(item) : <Ingredient>item;
+                }
+            }
+            this.totalNutrients = data.totalNutrients && !(<any>data.totalNutrients).toJSON ? new TotalNutrients(data.totalNutrients) : <TotalNutrients>this.totalNutrients;
+            this.totalDaily = data.totalDaily && !(<any>data.totalDaily).toJSON ? new TotalDaily(data.totalDaily) : <TotalDaily>this.totalDaily;
+            if (data.digest) {
+                this.digest = [];
+                for (let i = 0; i < data.digest.length; i++) {
+                    let item = data.digest[i];
+                    this.digest[i] = item && !(<any>item).toJSON ? new Digest(item) : <Digest>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.uri = _data["uri"];
+            this.label = _data["label"];
+            this.image = _data["image"];
+            this.images = _data["images"] ? Images.fromJS(_data["images"]) : <any>undefined;
+            this.source = _data["source"];
+            this.url = _data["url"];
+            this.shareAs = _data["shareAs"];
+            this.yield = _data["yield"];
+            if (Array.isArray(_data["dietLabels"])) {
+                this.dietLabels = [] as any;
+                for (let item of _data["dietLabels"])
+                    this.dietLabels!.push(item);
+            }
+            if (Array.isArray(_data["healthLabels"])) {
+                this.healthLabels = [] as any;
+                for (let item of _data["healthLabels"])
+                    this.healthLabels!.push(item);
+            }
+            if (Array.isArray(_data["cautions"])) {
+                this.cautions = [] as any;
+                for (let item of _data["cautions"])
+                    this.cautions!.push(item);
+            }
+            if (Array.isArray(_data["ingredientLines"])) {
+                this.ingredientLines = [] as any;
+                for (let item of _data["ingredientLines"])
+                    this.ingredientLines!.push(item);
+            }
+            if (Array.isArray(_data["ingredients"])) {
+                this.ingredients = [] as any;
+                for (let item of _data["ingredients"])
+                    this.ingredients!.push(Ingredient.fromJS(item));
+            }
+            this.calories = _data["calories"];
+            this.totalWeight = _data["totalWeight"];
+            this.totalTime = _data["totalTime"];
+            if (Array.isArray(_data["cuisineType"])) {
+                this.cuisineType = [] as any;
+                for (let item of _data["cuisineType"])
+                    this.cuisineType!.push(item);
+            }
+            if (Array.isArray(_data["mealType"])) {
+                this.mealType = [] as any;
+                for (let item of _data["mealType"])
+                    this.mealType!.push(item);
+            }
+            if (Array.isArray(_data["dishType"])) {
+                this.dishType = [] as any;
+                for (let item of _data["dishType"])
+                    this.dishType!.push(item);
+            }
+            this.totalNutrients = _data["totalNutrients"] ? TotalNutrients.fromJS(_data["totalNutrients"]) : <any>undefined;
+            this.totalDaily = _data["totalDaily"] ? TotalDaily.fromJS(_data["totalDaily"]) : <any>undefined;
+            if (Array.isArray(_data["digest"])) {
+                this.digest = [] as any;
+                for (let item of _data["digest"])
+                    this.digest!.push(Digest.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Recipe2 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Recipe2();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["uri"] = this.uri;
+        data["label"] = this.label;
+        data["image"] = this.image;
+        data["images"] = this.images ? this.images.toJSON() : <any>undefined;
+        data["source"] = this.source;
+        data["url"] = this.url;
+        data["shareAs"] = this.shareAs;
+        data["yield"] = this.yield;
+        if (Array.isArray(this.dietLabels)) {
+            data["dietLabels"] = [];
+            for (let item of this.dietLabels)
+                data["dietLabels"].push(item);
+        }
+        if (Array.isArray(this.healthLabels)) {
+            data["healthLabels"] = [];
+            for (let item of this.healthLabels)
+                data["healthLabels"].push(item);
+        }
+        if (Array.isArray(this.cautions)) {
+            data["cautions"] = [];
+            for (let item of this.cautions)
+                data["cautions"].push(item);
+        }
+        if (Array.isArray(this.ingredientLines)) {
+            data["ingredientLines"] = [];
+            for (let item of this.ingredientLines)
+                data["ingredientLines"].push(item);
+        }
+        if (Array.isArray(this.ingredients)) {
+            data["ingredients"] = [];
+            for (let item of this.ingredients)
+                data["ingredients"].push(item.toJSON());
+        }
+        data["calories"] = this.calories;
+        data["totalWeight"] = this.totalWeight;
+        data["totalTime"] = this.totalTime;
+        if (Array.isArray(this.cuisineType)) {
+            data["cuisineType"] = [];
+            for (let item of this.cuisineType)
+                data["cuisineType"].push(item);
+        }
+        if (Array.isArray(this.mealType)) {
+            data["mealType"] = [];
+            for (let item of this.mealType)
+                data["mealType"].push(item);
+        }
+        if (Array.isArray(this.dishType)) {
+            data["dishType"] = [];
+            for (let item of this.dishType)
+                data["dishType"].push(item);
+        }
+        data["totalNutrients"] = this.totalNutrients ? this.totalNutrients.toJSON() : <any>undefined;
+        data["totalDaily"] = this.totalDaily ? this.totalDaily.toJSON() : <any>undefined;
+        if (Array.isArray(this.digest)) {
+            data["digest"] = [];
+            for (let item of this.digest)
+                data["digest"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IRecipe2 {
+    uri?: string;
+    label?: string;
+    image?: string;
+    images?: IImages;
+    source?: string;
+    url?: string;
+    shareAs?: string;
+    yield?: number;
+    dietLabels?: string[];
+    healthLabels?: string[];
+    cautions?: string[];
+    ingredientLines?: string[];
+    ingredients?: IIngredient[];
+    calories?: number;
+    totalWeight?: number;
+    totalTime?: number;
+    cuisineType?: string[];
+    mealType?: string[];
+    dishType?: string[];
+    totalNutrients?: ITotalNutrients;
+    totalDaily?: ITotalDaily;
+    digest?: IDigest[];
+}
+
+export class Images implements IImages {
+    thumbnail?: THUMBNAIL;
+    small?: SMALL;
+    regular?: REGULAR;
+
+    constructor(data?: IImages) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.thumbnail = data.thumbnail && !(<any>data.thumbnail).toJSON ? new THUMBNAIL(data.thumbnail) : <THUMBNAIL>this.thumbnail;
+            this.small = data.small && !(<any>data.small).toJSON ? new SMALL(data.small) : <SMALL>this.small;
+            this.regular = data.regular && !(<any>data.regular).toJSON ? new REGULAR(data.regular) : <REGULAR>this.regular;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.thumbnail = _data["thumbnail"] ? THUMBNAIL.fromJS(_data["thumbnail"]) : <any>undefined;
+            this.small = _data["small"] ? SMALL.fromJS(_data["small"]) : <any>undefined;
+            this.regular = _data["regular"] ? REGULAR.fromJS(_data["regular"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Images {
+        data = typeof data === 'object' ? data : {};
+        let result = new Images();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["thumbnail"] = this.thumbnail ? this.thumbnail.toJSON() : <any>undefined;
+        data["small"] = this.small ? this.small.toJSON() : <any>undefined;
+        data["regular"] = this.regular ? this.regular.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IImages {
+    thumbnail?: ITHUMBNAIL;
+    small?: ISMALL;
+    regular?: IREGULAR;
+}
+
+export class THUMBNAIL implements ITHUMBNAIL {
+    url?: string;
+    width?: number;
+    height?: number;
+
+    constructor(data?: ITHUMBNAIL) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.url = _data["url"];
+            this.width = _data["width"];
+            this.height = _data["height"];
+        }
+    }
+
+    static fromJS(data: any): THUMBNAIL {
+        data = typeof data === 'object' ? data : {};
+        let result = new THUMBNAIL();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["url"] = this.url;
+        data["width"] = this.width;
+        data["height"] = this.height;
+        return data;
+    }
+}
+
+export interface ITHUMBNAIL {
+    url?: string;
+    width?: number;
+    height?: number;
+}
+
+export class SMALL implements ISMALL {
+    url?: string;
+    width?: number;
+    height?: number;
+
+    constructor(data?: ISMALL) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.url = _data["url"];
+            this.width = _data["width"];
+            this.height = _data["height"];
+        }
+    }
+
+    static fromJS(data: any): SMALL {
+        data = typeof data === 'object' ? data : {};
+        let result = new SMALL();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["url"] = this.url;
+        data["width"] = this.width;
+        data["height"] = this.height;
+        return data;
+    }
+}
+
+export interface ISMALL {
+    url?: string;
+    width?: number;
+    height?: number;
+}
+
+export class REGULAR implements IREGULAR {
+    url?: string;
+    width?: number;
+    height?: number;
+
+    constructor(data?: IREGULAR) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.url = _data["url"];
+            this.width = _data["width"];
+            this.height = _data["height"];
+        }
+    }
+
+    static fromJS(data: any): REGULAR {
+        data = typeof data === 'object' ? data : {};
+        let result = new REGULAR();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["url"] = this.url;
+        data["width"] = this.width;
+        data["height"] = this.height;
+        return data;
+    }
+}
+
+export interface IREGULAR {
+    url?: string;
+    width?: number;
+    height?: number;
+}
+
+export class Ingredient implements IIngredient {
+    text?: string;
+    quantity?: number;
+    measure?: string;
+    food?: string;
+    weight?: number;
+    foodCategory?: string;
+    foodId?: string;
+    image?: string;
+
+    constructor(data?: IIngredient) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.text = _data["text"];
+            this.quantity = _data["quantity"];
+            this.measure = _data["measure"];
+            this.food = _data["food"];
+            this.weight = _data["weight"];
+            this.foodCategory = _data["foodCategory"];
+            this.foodId = _data["foodId"];
+            this.image = _data["image"];
+        }
+    }
+
+    static fromJS(data: any): Ingredient {
+        data = typeof data === 'object' ? data : {};
+        let result = new Ingredient();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["text"] = this.text;
+        data["quantity"] = this.quantity;
+        data["measure"] = this.measure;
+        data["food"] = this.food;
+        data["weight"] = this.weight;
+        data["foodCategory"] = this.foodCategory;
+        data["foodId"] = this.foodId;
+        data["image"] = this.image;
+        return data;
+    }
+}
+
+export interface IIngredient {
+    text?: string;
+    quantity?: number;
+    measure?: string;
+    food?: string;
+    weight?: number;
+    foodCategory?: string;
+    foodId?: string;
+    image?: string;
+}
+
+export class TotalNutrients implements ITotalNutrients {
+    enerC_KCAL?: ENERCKCAL;
+    fat?: FAT;
+    fasat?: FASAT;
+    fatrn?: FATRN;
+    fams?: FAMS;
+    fapu?: FAPU;
+    chocdf?: CHOCDF;
+    cHOCDFNet?: CHOCDFNet;
+    fibtg?: FIBTG;
+    sugar?: SUGAR;
+    sUGARAdded?: SUGARAdded;
+    procnt?: PROCNT;
+    chole?: CHOLE;
+    na?: NA;
+    ca?: CA;
+    mg?: MG;
+    k?: K;
+    fe?: FE;
+    zn?: ZN;
+    p?: P;
+    vitA_RAE?: VITARAE;
+    vitc?: VITC;
+    thia?: THIA;
+    ribf?: RIBF;
+    nia?: NIA;
+    vitB6A?: VITB6A;
+    foldfe?: FOLDFE;
+    folfd?: FOLFD;
+    folac?: FOLAC;
+    vitB12?: VITB12;
+    vitd?: VITD;
+    tocpha?: TOCPHA;
+    vitK1?: VITK1;
+    sugarAlcohol?: SugarAlcohol;
+    water?: WATER;
+
+    constructor(data?: ITotalNutrients) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.enerC_KCAL = data.enerC_KCAL && !(<any>data.enerC_KCAL).toJSON ? new ENERCKCAL(data.enerC_KCAL) : <ENERCKCAL>this.enerC_KCAL;
+            this.fat = data.fat && !(<any>data.fat).toJSON ? new FAT(data.fat) : <FAT>this.fat;
+            this.fasat = data.fasat && !(<any>data.fasat).toJSON ? new FASAT(data.fasat) : <FASAT>this.fasat;
+            this.fatrn = data.fatrn && !(<any>data.fatrn).toJSON ? new FATRN(data.fatrn) : <FATRN>this.fatrn;
+            this.fams = data.fams && !(<any>data.fams).toJSON ? new FAMS(data.fams) : <FAMS>this.fams;
+            this.fapu = data.fapu && !(<any>data.fapu).toJSON ? new FAPU(data.fapu) : <FAPU>this.fapu;
+            this.chocdf = data.chocdf && !(<any>data.chocdf).toJSON ? new CHOCDF(data.chocdf) : <CHOCDF>this.chocdf;
+            this.cHOCDFNet = data.cHOCDFNet && !(<any>data.cHOCDFNet).toJSON ? new CHOCDFNet(data.cHOCDFNet) : <CHOCDFNet>this.cHOCDFNet;
+            this.fibtg = data.fibtg && !(<any>data.fibtg).toJSON ? new FIBTG(data.fibtg) : <FIBTG>this.fibtg;
+            this.sugar = data.sugar && !(<any>data.sugar).toJSON ? new SUGAR(data.sugar) : <SUGAR>this.sugar;
+            this.sUGARAdded = data.sUGARAdded && !(<any>data.sUGARAdded).toJSON ? new SUGARAdded(data.sUGARAdded) : <SUGARAdded>this.sUGARAdded;
+            this.procnt = data.procnt && !(<any>data.procnt).toJSON ? new PROCNT(data.procnt) : <PROCNT>this.procnt;
+            this.chole = data.chole && !(<any>data.chole).toJSON ? new CHOLE(data.chole) : <CHOLE>this.chole;
+            this.na = data.na && !(<any>data.na).toJSON ? new NA(data.na) : <NA>this.na;
+            this.ca = data.ca && !(<any>data.ca).toJSON ? new CA(data.ca) : <CA>this.ca;
+            this.mg = data.mg && !(<any>data.mg).toJSON ? new MG(data.mg) : <MG>this.mg;
+            this.k = data.k && !(<any>data.k).toJSON ? new K(data.k) : <K>this.k;
+            this.fe = data.fe && !(<any>data.fe).toJSON ? new FE(data.fe) : <FE>this.fe;
+            this.zn = data.zn && !(<any>data.zn).toJSON ? new ZN(data.zn) : <ZN>this.zn;
+            this.p = data.p && !(<any>data.p).toJSON ? new P(data.p) : <P>this.p;
+            this.vitA_RAE = data.vitA_RAE && !(<any>data.vitA_RAE).toJSON ? new VITARAE(data.vitA_RAE) : <VITARAE>this.vitA_RAE;
+            this.vitc = data.vitc && !(<any>data.vitc).toJSON ? new VITC(data.vitc) : <VITC>this.vitc;
+            this.thia = data.thia && !(<any>data.thia).toJSON ? new THIA(data.thia) : <THIA>this.thia;
+            this.ribf = data.ribf && !(<any>data.ribf).toJSON ? new RIBF(data.ribf) : <RIBF>this.ribf;
+            this.nia = data.nia && !(<any>data.nia).toJSON ? new NIA(data.nia) : <NIA>this.nia;
+            this.vitB6A = data.vitB6A && !(<any>data.vitB6A).toJSON ? new VITB6A(data.vitB6A) : <VITB6A>this.vitB6A;
+            this.foldfe = data.foldfe && !(<any>data.foldfe).toJSON ? new FOLDFE(data.foldfe) : <FOLDFE>this.foldfe;
+            this.folfd = data.folfd && !(<any>data.folfd).toJSON ? new FOLFD(data.folfd) : <FOLFD>this.folfd;
+            this.folac = data.folac && !(<any>data.folac).toJSON ? new FOLAC(data.folac) : <FOLAC>this.folac;
+            this.vitB12 = data.vitB12 && !(<any>data.vitB12).toJSON ? new VITB12(data.vitB12) : <VITB12>this.vitB12;
+            this.vitd = data.vitd && !(<any>data.vitd).toJSON ? new VITD(data.vitd) : <VITD>this.vitd;
+            this.tocpha = data.tocpha && !(<any>data.tocpha).toJSON ? new TOCPHA(data.tocpha) : <TOCPHA>this.tocpha;
+            this.vitK1 = data.vitK1 && !(<any>data.vitK1).toJSON ? new VITK1(data.vitK1) : <VITK1>this.vitK1;
+            this.sugarAlcohol = data.sugarAlcohol && !(<any>data.sugarAlcohol).toJSON ? new SugarAlcohol(data.sugarAlcohol) : <SugarAlcohol>this.sugarAlcohol;
+            this.water = data.water && !(<any>data.water).toJSON ? new WATER(data.water) : <WATER>this.water;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.enerC_KCAL = _data["enerC_KCAL"] ? ENERCKCAL.fromJS(_data["enerC_KCAL"]) : <any>undefined;
+            this.fat = _data["fat"] ? FAT.fromJS(_data["fat"]) : <any>undefined;
+            this.fasat = _data["fasat"] ? FASAT.fromJS(_data["fasat"]) : <any>undefined;
+            this.fatrn = _data["fatrn"] ? FATRN.fromJS(_data["fatrn"]) : <any>undefined;
+            this.fams = _data["fams"] ? FAMS.fromJS(_data["fams"]) : <any>undefined;
+            this.fapu = _data["fapu"] ? FAPU.fromJS(_data["fapu"]) : <any>undefined;
+            this.chocdf = _data["chocdf"] ? CHOCDF.fromJS(_data["chocdf"]) : <any>undefined;
+            this.cHOCDFNet = _data["CHOCDF.net"] ? CHOCDFNet.fromJS(_data["CHOCDF.net"]) : <any>undefined;
+            this.fibtg = _data["fibtg"] ? FIBTG.fromJS(_data["fibtg"]) : <any>undefined;
+            this.sugar = _data["sugar"] ? SUGAR.fromJS(_data["sugar"]) : <any>undefined;
+            this.sUGARAdded = _data["SUGAR.added"] ? SUGARAdded.fromJS(_data["SUGAR.added"]) : <any>undefined;
+            this.procnt = _data["procnt"] ? PROCNT.fromJS(_data["procnt"]) : <any>undefined;
+            this.chole = _data["chole"] ? CHOLE.fromJS(_data["chole"]) : <any>undefined;
+            this.na = _data["na"] ? NA.fromJS(_data["na"]) : <any>undefined;
+            this.ca = _data["ca"] ? CA.fromJS(_data["ca"]) : <any>undefined;
+            this.mg = _data["mg"] ? MG.fromJS(_data["mg"]) : <any>undefined;
+            this.k = _data["k"] ? K.fromJS(_data["k"]) : <any>undefined;
+            this.fe = _data["fe"] ? FE.fromJS(_data["fe"]) : <any>undefined;
+            this.zn = _data["zn"] ? ZN.fromJS(_data["zn"]) : <any>undefined;
+            this.p = _data["p"] ? P.fromJS(_data["p"]) : <any>undefined;
+            this.vitA_RAE = _data["vitA_RAE"] ? VITARAE.fromJS(_data["vitA_RAE"]) : <any>undefined;
+            this.vitc = _data["vitc"] ? VITC.fromJS(_data["vitc"]) : <any>undefined;
+            this.thia = _data["thia"] ? THIA.fromJS(_data["thia"]) : <any>undefined;
+            this.ribf = _data["ribf"] ? RIBF.fromJS(_data["ribf"]) : <any>undefined;
+            this.nia = _data["nia"] ? NIA.fromJS(_data["nia"]) : <any>undefined;
+            this.vitB6A = _data["vitB6A"] ? VITB6A.fromJS(_data["vitB6A"]) : <any>undefined;
+            this.foldfe = _data["foldfe"] ? FOLDFE.fromJS(_data["foldfe"]) : <any>undefined;
+            this.folfd = _data["folfd"] ? FOLFD.fromJS(_data["folfd"]) : <any>undefined;
+            this.folac = _data["folac"] ? FOLAC.fromJS(_data["folac"]) : <any>undefined;
+            this.vitB12 = _data["vitB12"] ? VITB12.fromJS(_data["vitB12"]) : <any>undefined;
+            this.vitd = _data["vitd"] ? VITD.fromJS(_data["vitd"]) : <any>undefined;
+            this.tocpha = _data["tocpha"] ? TOCPHA.fromJS(_data["tocpha"]) : <any>undefined;
+            this.vitK1 = _data["vitK1"] ? VITK1.fromJS(_data["vitK1"]) : <any>undefined;
+            this.sugarAlcohol = _data["Sugar.alcohol"] ? SugarAlcohol.fromJS(_data["Sugar.alcohol"]) : <any>undefined;
+            this.water = _data["water"] ? WATER.fromJS(_data["water"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): TotalNutrients {
+        data = typeof data === 'object' ? data : {};
+        let result = new TotalNutrients();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["enerC_KCAL"] = this.enerC_KCAL ? this.enerC_KCAL.toJSON() : <any>undefined;
+        data["fat"] = this.fat ? this.fat.toJSON() : <any>undefined;
+        data["fasat"] = this.fasat ? this.fasat.toJSON() : <any>undefined;
+        data["fatrn"] = this.fatrn ? this.fatrn.toJSON() : <any>undefined;
+        data["fams"] = this.fams ? this.fams.toJSON() : <any>undefined;
+        data["fapu"] = this.fapu ? this.fapu.toJSON() : <any>undefined;
+        data["chocdf"] = this.chocdf ? this.chocdf.toJSON() : <any>undefined;
+        data["CHOCDF.net"] = this.cHOCDFNet ? this.cHOCDFNet.toJSON() : <any>undefined;
+        data["fibtg"] = this.fibtg ? this.fibtg.toJSON() : <any>undefined;
+        data["sugar"] = this.sugar ? this.sugar.toJSON() : <any>undefined;
+        data["SUGAR.added"] = this.sUGARAdded ? this.sUGARAdded.toJSON() : <any>undefined;
+        data["procnt"] = this.procnt ? this.procnt.toJSON() : <any>undefined;
+        data["chole"] = this.chole ? this.chole.toJSON() : <any>undefined;
+        data["na"] = this.na ? this.na.toJSON() : <any>undefined;
+        data["ca"] = this.ca ? this.ca.toJSON() : <any>undefined;
+        data["mg"] = this.mg ? this.mg.toJSON() : <any>undefined;
+        data["k"] = this.k ? this.k.toJSON() : <any>undefined;
+        data["fe"] = this.fe ? this.fe.toJSON() : <any>undefined;
+        data["zn"] = this.zn ? this.zn.toJSON() : <any>undefined;
+        data["p"] = this.p ? this.p.toJSON() : <any>undefined;
+        data["vitA_RAE"] = this.vitA_RAE ? this.vitA_RAE.toJSON() : <any>undefined;
+        data["vitc"] = this.vitc ? this.vitc.toJSON() : <any>undefined;
+        data["thia"] = this.thia ? this.thia.toJSON() : <any>undefined;
+        data["ribf"] = this.ribf ? this.ribf.toJSON() : <any>undefined;
+        data["nia"] = this.nia ? this.nia.toJSON() : <any>undefined;
+        data["vitB6A"] = this.vitB6A ? this.vitB6A.toJSON() : <any>undefined;
+        data["foldfe"] = this.foldfe ? this.foldfe.toJSON() : <any>undefined;
+        data["folfd"] = this.folfd ? this.folfd.toJSON() : <any>undefined;
+        data["folac"] = this.folac ? this.folac.toJSON() : <any>undefined;
+        data["vitB12"] = this.vitB12 ? this.vitB12.toJSON() : <any>undefined;
+        data["vitd"] = this.vitd ? this.vitd.toJSON() : <any>undefined;
+        data["tocpha"] = this.tocpha ? this.tocpha.toJSON() : <any>undefined;
+        data["vitK1"] = this.vitK1 ? this.vitK1.toJSON() : <any>undefined;
+        data["Sugar.alcohol"] = this.sugarAlcohol ? this.sugarAlcohol.toJSON() : <any>undefined;
+        data["water"] = this.water ? this.water.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ITotalNutrients {
+    enerC_KCAL?: IENERCKCAL;
+    fat?: IFAT;
+    fasat?: IFASAT;
+    fatrn?: IFATRN;
+    fams?: IFAMS;
+    fapu?: IFAPU;
+    chocdf?: ICHOCDF;
+    cHOCDFNet?: ICHOCDFNet;
+    fibtg?: IFIBTG;
+    sugar?: ISUGAR;
+    sUGARAdded?: ISUGARAdded;
+    procnt?: IPROCNT;
+    chole?: ICHOLE;
+    na?: INA;
+    ca?: ICA;
+    mg?: IMG;
+    k?: IK;
+    fe?: IFE;
+    zn?: IZN;
+    p?: IP;
+    vitA_RAE?: IVITARAE;
+    vitc?: IVITC;
+    thia?: ITHIA;
+    ribf?: IRIBF;
+    nia?: INIA;
+    vitB6A?: IVITB6A;
+    foldfe?: IFOLDFE;
+    folfd?: IFOLFD;
+    folac?: IFOLAC;
+    vitB12?: IVITB12;
+    vitd?: IVITD;
+    tocpha?: ITOCPHA;
+    vitK1?: IVITK1;
+    sugarAlcohol?: ISugarAlcohol;
+    water?: IWATER;
+}
+
+export class ENERCKCAL implements IENERCKCAL {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IENERCKCAL) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): ENERCKCAL {
+        data = typeof data === 'object' ? data : {};
+        let result = new ENERCKCAL();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IENERCKCAL {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FAT implements IFAT {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFAT) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FAT {
+        data = typeof data === 'object' ? data : {};
+        let result = new FAT();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFAT {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FASAT implements IFASAT {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFASAT) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FASAT {
+        data = typeof data === 'object' ? data : {};
+        let result = new FASAT();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFASAT {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FATRN implements IFATRN {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFATRN) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FATRN {
+        data = typeof data === 'object' ? data : {};
+        let result = new FATRN();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFATRN {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FAMS implements IFAMS {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFAMS) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FAMS {
+        data = typeof data === 'object' ? data : {};
+        let result = new FAMS();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFAMS {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FAPU implements IFAPU {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFAPU) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FAPU {
+        data = typeof data === 'object' ? data : {};
+        let result = new FAPU();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFAPU {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class CHOCDF implements ICHOCDF {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ICHOCDF) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): CHOCDF {
+        data = typeof data === 'object' ? data : {};
+        let result = new CHOCDF();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ICHOCDF {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class CHOCDFNet implements ICHOCDFNet {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ICHOCDFNet) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): CHOCDFNet {
+        data = typeof data === 'object' ? data : {};
+        let result = new CHOCDFNet();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ICHOCDFNet {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FIBTG implements IFIBTG {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFIBTG) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FIBTG {
+        data = typeof data === 'object' ? data : {};
+        let result = new FIBTG();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFIBTG {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class SUGAR implements ISUGAR {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ISUGAR) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): SUGAR {
+        data = typeof data === 'object' ? data : {};
+        let result = new SUGAR();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ISUGAR {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class SUGARAdded implements ISUGARAdded {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ISUGARAdded) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): SUGARAdded {
+        data = typeof data === 'object' ? data : {};
+        let result = new SUGARAdded();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ISUGARAdded {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class PROCNT implements IPROCNT {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IPROCNT) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): PROCNT {
+        data = typeof data === 'object' ? data : {};
+        let result = new PROCNT();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IPROCNT {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class CHOLE implements ICHOLE {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ICHOLE) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): CHOLE {
+        data = typeof data === 'object' ? data : {};
+        let result = new CHOLE();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ICHOLE {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class NA implements INA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: INA) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): NA {
+        data = typeof data === 'object' ? data : {};
+        let result = new NA();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface INA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class CA implements ICA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ICA) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): CA {
+        data = typeof data === 'object' ? data : {};
+        let result = new CA();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ICA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class MG implements IMG {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IMG) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): MG {
+        data = typeof data === 'object' ? data : {};
+        let result = new MG();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IMG {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class K implements IK {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IK) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): K {
+        data = typeof data === 'object' ? data : {};
+        let result = new K();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IK {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FE implements IFE {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFE) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FE {
+        data = typeof data === 'object' ? data : {};
+        let result = new FE();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFE {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class ZN implements IZN {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IZN) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): ZN {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZN();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IZN {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class P implements IP {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IP) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): P {
+        data = typeof data === 'object' ? data : {};
+        let result = new P();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IP {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class VITARAE implements IVITARAE {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IVITARAE) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): VITARAE {
+        data = typeof data === 'object' ? data : {};
+        let result = new VITARAE();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IVITARAE {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class VITC implements IVITC {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IVITC) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): VITC {
+        data = typeof data === 'object' ? data : {};
+        let result = new VITC();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IVITC {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class THIA implements ITHIA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ITHIA) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): THIA {
+        data = typeof data === 'object' ? data : {};
+        let result = new THIA();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ITHIA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class RIBF implements IRIBF {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IRIBF) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): RIBF {
+        data = typeof data === 'object' ? data : {};
+        let result = new RIBF();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IRIBF {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class NIA implements INIA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: INIA) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): NIA {
+        data = typeof data === 'object' ? data : {};
+        let result = new NIA();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface INIA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class VITB6A implements IVITB6A {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IVITB6A) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): VITB6A {
+        data = typeof data === 'object' ? data : {};
+        let result = new VITB6A();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IVITB6A {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FOLDFE implements IFOLDFE {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFOLDFE) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FOLDFE {
+        data = typeof data === 'object' ? data : {};
+        let result = new FOLDFE();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFOLDFE {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FOLFD implements IFOLFD {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFOLFD) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FOLFD {
+        data = typeof data === 'object' ? data : {};
+        let result = new FOLFD();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFOLFD {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class FOLAC implements IFOLAC {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IFOLAC) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): FOLAC {
+        data = typeof data === 'object' ? data : {};
+        let result = new FOLAC();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IFOLAC {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class VITB12 implements IVITB12 {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IVITB12) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): VITB12 {
+        data = typeof data === 'object' ? data : {};
+        let result = new VITB12();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IVITB12 {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class VITD implements IVITD {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IVITD) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): VITD {
+        data = typeof data === 'object' ? data : {};
+        let result = new VITD();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IVITD {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class TOCPHA implements ITOCPHA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ITOCPHA) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): TOCPHA {
+        data = typeof data === 'object' ? data : {};
+        let result = new TOCPHA();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ITOCPHA {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class VITK1 implements IVITK1 {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IVITK1) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): VITK1 {
+        data = typeof data === 'object' ? data : {};
+        let result = new VITK1();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IVITK1 {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class SugarAlcohol implements ISugarAlcohol {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: ISugarAlcohol) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): SugarAlcohol {
+        data = typeof data === 'object' ? data : {};
+        let result = new SugarAlcohol();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ISugarAlcohol {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class WATER implements IWATER {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+
+    constructor(data?: IWATER) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.quantity = _data["quantity"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): WATER {
+        data = typeof data === 'object' ? data : {};
+        let result = new WATER();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["quantity"] = this.quantity;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IWATER {
+    label?: string;
+    quantity?: number;
+    unit?: string;
+}
+
+export class TotalDaily implements ITotalDaily {
+    enerC_KCAL?: ENERCKCAL;
+    fat?: FAT;
+    fasat?: FASAT;
+    chocdf?: CHOCDF;
+    fibtg?: FIBTG;
+    procnt?: PROCNT;
+    chole?: CHOLE;
+    na?: NA;
+    ca?: CA;
+    mg?: MG;
+    k?: K;
+    fe?: FE;
+    zn?: ZN;
+    p?: P;
+    vitA_RAE?: VITARAE;
+    vitc?: VITC;
+    thia?: THIA;
+    ribf?: RIBF;
+    nia?: NIA;
+    vitB6A?: VITB6A;
+    foldfe?: FOLDFE;
+    vitB12?: VITB12;
+    vitd?: VITD;
+    tocpha?: TOCPHA;
+    vitK1?: VITK1;
+
+    constructor(data?: ITotalDaily) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.enerC_KCAL = data.enerC_KCAL && !(<any>data.enerC_KCAL).toJSON ? new ENERCKCAL(data.enerC_KCAL) : <ENERCKCAL>this.enerC_KCAL;
+            this.fat = data.fat && !(<any>data.fat).toJSON ? new FAT(data.fat) : <FAT>this.fat;
+            this.fasat = data.fasat && !(<any>data.fasat).toJSON ? new FASAT(data.fasat) : <FASAT>this.fasat;
+            this.chocdf = data.chocdf && !(<any>data.chocdf).toJSON ? new CHOCDF(data.chocdf) : <CHOCDF>this.chocdf;
+            this.fibtg = data.fibtg && !(<any>data.fibtg).toJSON ? new FIBTG(data.fibtg) : <FIBTG>this.fibtg;
+            this.procnt = data.procnt && !(<any>data.procnt).toJSON ? new PROCNT(data.procnt) : <PROCNT>this.procnt;
+            this.chole = data.chole && !(<any>data.chole).toJSON ? new CHOLE(data.chole) : <CHOLE>this.chole;
+            this.na = data.na && !(<any>data.na).toJSON ? new NA(data.na) : <NA>this.na;
+            this.ca = data.ca && !(<any>data.ca).toJSON ? new CA(data.ca) : <CA>this.ca;
+            this.mg = data.mg && !(<any>data.mg).toJSON ? new MG(data.mg) : <MG>this.mg;
+            this.k = data.k && !(<any>data.k).toJSON ? new K(data.k) : <K>this.k;
+            this.fe = data.fe && !(<any>data.fe).toJSON ? new FE(data.fe) : <FE>this.fe;
+            this.zn = data.zn && !(<any>data.zn).toJSON ? new ZN(data.zn) : <ZN>this.zn;
+            this.p = data.p && !(<any>data.p).toJSON ? new P(data.p) : <P>this.p;
+            this.vitA_RAE = data.vitA_RAE && !(<any>data.vitA_RAE).toJSON ? new VITARAE(data.vitA_RAE) : <VITARAE>this.vitA_RAE;
+            this.vitc = data.vitc && !(<any>data.vitc).toJSON ? new VITC(data.vitc) : <VITC>this.vitc;
+            this.thia = data.thia && !(<any>data.thia).toJSON ? new THIA(data.thia) : <THIA>this.thia;
+            this.ribf = data.ribf && !(<any>data.ribf).toJSON ? new RIBF(data.ribf) : <RIBF>this.ribf;
+            this.nia = data.nia && !(<any>data.nia).toJSON ? new NIA(data.nia) : <NIA>this.nia;
+            this.vitB6A = data.vitB6A && !(<any>data.vitB6A).toJSON ? new VITB6A(data.vitB6A) : <VITB6A>this.vitB6A;
+            this.foldfe = data.foldfe && !(<any>data.foldfe).toJSON ? new FOLDFE(data.foldfe) : <FOLDFE>this.foldfe;
+            this.vitB12 = data.vitB12 && !(<any>data.vitB12).toJSON ? new VITB12(data.vitB12) : <VITB12>this.vitB12;
+            this.vitd = data.vitd && !(<any>data.vitd).toJSON ? new VITD(data.vitd) : <VITD>this.vitd;
+            this.tocpha = data.tocpha && !(<any>data.tocpha).toJSON ? new TOCPHA(data.tocpha) : <TOCPHA>this.tocpha;
+            this.vitK1 = data.vitK1 && !(<any>data.vitK1).toJSON ? new VITK1(data.vitK1) : <VITK1>this.vitK1;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.enerC_KCAL = _data["enerC_KCAL"] ? ENERCKCAL.fromJS(_data["enerC_KCAL"]) : <any>undefined;
+            this.fat = _data["fat"] ? FAT.fromJS(_data["fat"]) : <any>undefined;
+            this.fasat = _data["fasat"] ? FASAT.fromJS(_data["fasat"]) : <any>undefined;
+            this.chocdf = _data["chocdf"] ? CHOCDF.fromJS(_data["chocdf"]) : <any>undefined;
+            this.fibtg = _data["fibtg"] ? FIBTG.fromJS(_data["fibtg"]) : <any>undefined;
+            this.procnt = _data["procnt"] ? PROCNT.fromJS(_data["procnt"]) : <any>undefined;
+            this.chole = _data["chole"] ? CHOLE.fromJS(_data["chole"]) : <any>undefined;
+            this.na = _data["na"] ? NA.fromJS(_data["na"]) : <any>undefined;
+            this.ca = _data["ca"] ? CA.fromJS(_data["ca"]) : <any>undefined;
+            this.mg = _data["mg"] ? MG.fromJS(_data["mg"]) : <any>undefined;
+            this.k = _data["k"] ? K.fromJS(_data["k"]) : <any>undefined;
+            this.fe = _data["fe"] ? FE.fromJS(_data["fe"]) : <any>undefined;
+            this.zn = _data["zn"] ? ZN.fromJS(_data["zn"]) : <any>undefined;
+            this.p = _data["p"] ? P.fromJS(_data["p"]) : <any>undefined;
+            this.vitA_RAE = _data["vitA_RAE"] ? VITARAE.fromJS(_data["vitA_RAE"]) : <any>undefined;
+            this.vitc = _data["vitc"] ? VITC.fromJS(_data["vitc"]) : <any>undefined;
+            this.thia = _data["thia"] ? THIA.fromJS(_data["thia"]) : <any>undefined;
+            this.ribf = _data["ribf"] ? RIBF.fromJS(_data["ribf"]) : <any>undefined;
+            this.nia = _data["nia"] ? NIA.fromJS(_data["nia"]) : <any>undefined;
+            this.vitB6A = _data["vitB6A"] ? VITB6A.fromJS(_data["vitB6A"]) : <any>undefined;
+            this.foldfe = _data["foldfe"] ? FOLDFE.fromJS(_data["foldfe"]) : <any>undefined;
+            this.vitB12 = _data["vitB12"] ? VITB12.fromJS(_data["vitB12"]) : <any>undefined;
+            this.vitd = _data["vitd"] ? VITD.fromJS(_data["vitd"]) : <any>undefined;
+            this.tocpha = _data["tocpha"] ? TOCPHA.fromJS(_data["tocpha"]) : <any>undefined;
+            this.vitK1 = _data["vitK1"] ? VITK1.fromJS(_data["vitK1"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): TotalDaily {
+        data = typeof data === 'object' ? data : {};
+        let result = new TotalDaily();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["enerC_KCAL"] = this.enerC_KCAL ? this.enerC_KCAL.toJSON() : <any>undefined;
+        data["fat"] = this.fat ? this.fat.toJSON() : <any>undefined;
+        data["fasat"] = this.fasat ? this.fasat.toJSON() : <any>undefined;
+        data["chocdf"] = this.chocdf ? this.chocdf.toJSON() : <any>undefined;
+        data["fibtg"] = this.fibtg ? this.fibtg.toJSON() : <any>undefined;
+        data["procnt"] = this.procnt ? this.procnt.toJSON() : <any>undefined;
+        data["chole"] = this.chole ? this.chole.toJSON() : <any>undefined;
+        data["na"] = this.na ? this.na.toJSON() : <any>undefined;
+        data["ca"] = this.ca ? this.ca.toJSON() : <any>undefined;
+        data["mg"] = this.mg ? this.mg.toJSON() : <any>undefined;
+        data["k"] = this.k ? this.k.toJSON() : <any>undefined;
+        data["fe"] = this.fe ? this.fe.toJSON() : <any>undefined;
+        data["zn"] = this.zn ? this.zn.toJSON() : <any>undefined;
+        data["p"] = this.p ? this.p.toJSON() : <any>undefined;
+        data["vitA_RAE"] = this.vitA_RAE ? this.vitA_RAE.toJSON() : <any>undefined;
+        data["vitc"] = this.vitc ? this.vitc.toJSON() : <any>undefined;
+        data["thia"] = this.thia ? this.thia.toJSON() : <any>undefined;
+        data["ribf"] = this.ribf ? this.ribf.toJSON() : <any>undefined;
+        data["nia"] = this.nia ? this.nia.toJSON() : <any>undefined;
+        data["vitB6A"] = this.vitB6A ? this.vitB6A.toJSON() : <any>undefined;
+        data["foldfe"] = this.foldfe ? this.foldfe.toJSON() : <any>undefined;
+        data["vitB12"] = this.vitB12 ? this.vitB12.toJSON() : <any>undefined;
+        data["vitd"] = this.vitd ? this.vitd.toJSON() : <any>undefined;
+        data["tocpha"] = this.tocpha ? this.tocpha.toJSON() : <any>undefined;
+        data["vitK1"] = this.vitK1 ? this.vitK1.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ITotalDaily {
+    enerC_KCAL?: IENERCKCAL;
+    fat?: IFAT;
+    fasat?: IFASAT;
+    chocdf?: ICHOCDF;
+    fibtg?: IFIBTG;
+    procnt?: IPROCNT;
+    chole?: ICHOLE;
+    na?: INA;
+    ca?: ICA;
+    mg?: IMG;
+    k?: IK;
+    fe?: IFE;
+    zn?: IZN;
+    p?: IP;
+    vitA_RAE?: IVITARAE;
+    vitc?: IVITC;
+    thia?: ITHIA;
+    ribf?: IRIBF;
+    nia?: INIA;
+    vitB6A?: IVITB6A;
+    foldfe?: IFOLDFE;
+    vitB12?: IVITB12;
+    vitd?: IVITD;
+    tocpha?: ITOCPHA;
+    vitK1?: IVITK1;
+}
+
+export class Digest implements IDigest {
+    label?: string;
+    tag?: string;
+    schemaOrgTag?: string;
+    total?: number;
+    hasRDI?: boolean;
+    daily?: number;
+    unit?: string;
+    sub?: Sub[];
+
+    constructor(data?: IDigest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.sub) {
+                this.sub = [];
+                for (let i = 0; i < data.sub.length; i++) {
+                    let item = data.sub[i];
+                    this.sub[i] = item && !(<any>item).toJSON ? new Sub(item) : <Sub>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.tag = _data["tag"];
+            this.schemaOrgTag = _data["schemaOrgTag"];
+            this.total = _data["total"];
+            this.hasRDI = _data["hasRDI"];
+            this.daily = _data["daily"];
+            this.unit = _data["unit"];
+            if (Array.isArray(_data["sub"])) {
+                this.sub = [] as any;
+                for (let item of _data["sub"])
+                    this.sub!.push(Sub.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Digest {
+        data = typeof data === 'object' ? data : {};
+        let result = new Digest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["tag"] = this.tag;
+        data["schemaOrgTag"] = this.schemaOrgTag;
+        data["total"] = this.total;
+        data["hasRDI"] = this.hasRDI;
+        data["daily"] = this.daily;
+        data["unit"] = this.unit;
+        if (Array.isArray(this.sub)) {
+            data["sub"] = [];
+            for (let item of this.sub)
+                data["sub"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IDigest {
+    label?: string;
+    tag?: string;
+    schemaOrgTag?: string;
+    total?: number;
+    hasRDI?: boolean;
+    daily?: number;
+    unit?: string;
+    sub?: ISub[];
+}
+
+export class Sub implements ISub {
+    label?: string;
+    tag?: string;
+    schemaOrgTag?: string;
+    total?: number;
+    hasRDI?: boolean;
+    daily?: number;
+    unit?: string;
+
+    constructor(data?: ISub) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.tag = _data["tag"];
+            this.schemaOrgTag = _data["schemaOrgTag"];
+            this.total = _data["total"];
+            this.hasRDI = _data["hasRDI"];
+            this.daily = _data["daily"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): Sub {
+        data = typeof data === 'object' ? data : {};
+        let result = new Sub();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["tag"] = this.tag;
+        data["schemaOrgTag"] = this.schemaOrgTag;
+        data["total"] = this.total;
+        data["hasRDI"] = this.hasRDI;
+        data["daily"] = this.daily;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface ISub {
+    label?: string;
+    tag?: string;
+    schemaOrgTag?: string;
+    total?: number;
+    hasRDI?: boolean;
+    daily?: number;
+    unit?: string;
+}
+
+export class Links implements ILinks {
+    self?: Self;
+
+    constructor(data?: ILinks) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.self = data.self && !(<any>data.self).toJSON ? new Self(data.self) : <Self>this.self;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.self = _data["self"] ? Self.fromJS(_data["self"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Links {
+        data = typeof data === 'object' ? data : {};
+        let result = new Links();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["self"] = this.self ? this.self.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ILinks {
+    self?: ISelf;
+}
+
+export class Self implements ISelf {
+    href?: string;
+    title?: string;
+
+    constructor(data?: ISelf) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.href = _data["href"];
+            this.title = _data["title"];
+        }
+    }
+
+    static fromJS(data: any): Self {
+        data = typeof data === 'object' ? data : {};
+        let result = new Self();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["href"] = this.href;
+        data["title"] = this.title;
+        return data;
+    }
+}
+
+export interface ISelf {
+    href?: string;
+    title?: string;
 }
 
 export class SwaggerException extends Error {

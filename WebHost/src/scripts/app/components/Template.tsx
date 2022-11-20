@@ -20,6 +20,7 @@ export const Template: React.FC = () => {
             <Route path="/TodaysPlan" element={<TodaysPlan />} />
             <Route path="/CreatePlan" element={<p>Create a plan</p>} />
             <Route path="/SearchRecipies" element={<SearchRecipies />} />
+            <Route path="/ShoppingList" element={<p>Shopping List</p>} />
             <Route path="*" element={<Navigate to={"/"}></Navigate>} />
           </Routes>
           <Footer />
@@ -31,6 +32,7 @@ export const Template: React.FC = () => {
             <Link to={"/TodaysPlan"}>Today's Plan</Link>
             <Link to={"/CreatePlan"}>Create a Plan</Link>
             <Link to={"/SearchRecipies"}>Search Recipies</Link>
+            <Link to={"/ShoppingList"}>Shopping List</Link>
           </ul>
         </div>
       </div>

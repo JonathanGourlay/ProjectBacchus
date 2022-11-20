@@ -1,25 +1,10 @@
-import useRecipies from "hooks/useRecipes";
 import React, { useState } from "react";
 import { InfoCarousel } from "./InfoCarousel";
-import PrettyPrintJson from "./prettyPrintJSON";
 export const TodaysPlan: React.FC = () => {
     const meals = ["Breakfast", "Lunch", "Dinner", "Snack"]
 
-    const [userInput, setUserInput] = React.useState("");
-
-    const meals2 = useRecipies({
-        query: userInput
-    })
-
     return (
         <>
-            <input value={userInput} onChange={(event) => {
-                setUserInput(event.target.value);
-            }} />
-
-            {meals2.isLoading && <div><h1>Is loading!!!</h1></div>}
-
-            <PrettyPrintJson data={meals2.data} />
             <div className="overflow-x-auto">
                 {/* Put this part before </body> tag */}
                 <input type="checkbox" id="my-modal-4" className="modal-toggle" />

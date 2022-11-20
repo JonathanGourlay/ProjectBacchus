@@ -102,6 +102,7 @@
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-helmet": "^6.1.0",
+    "react-hook-form": "^7.39.4",
     "react-router-dom": "^6.3.0",
     "react-use": "^17.4.0",
     "scss-spinners": "^2.1.3",

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Net6SpaTemplate.BLL.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,6 @@ namespace Net6SpaTemplate.BLL
     public class Recipe
     {
         public string Images { get; set; }
-        public string Links { get; set; }
+        public RecipieResponse? Recipie { get; set; }
     }
 }
