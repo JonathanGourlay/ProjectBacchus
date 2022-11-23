@@ -17,7 +17,7 @@ export const Navigation: React.FC = () => {
 
         <div className="navbar bg-base-100">
             <div className="flex-none">
-                <label htmlFor="my-drawer" className="btn btn-primary drawer-button"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-5 h-5 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <label htmlFor="my-drawer" className="btn btn-neutral drawer-button"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-5 h-5 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </label>
             </div>
             <div className="flex-1">
@@ -29,11 +29,11 @@ export const Navigation: React.FC = () => {
                         <ul tabIndex={0} className="dropdown-content menu p-2 shadow rounded-box w-52">
                             <p>Theme</p>
                             <li>
-                                <select data-choose-theme className="select select-primary w-full max-w-xs">
+                                <select data-choose-theme className="select select-neutral w-full max-w-xs">
                                     <>
                                         {["light", "dark", "cupcake", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua",
                                             "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", "cmyk", "autumn", "business", "acid", "lemonade", "night", "coffee", "winter"].map((theme, i) =>
-                                                <option key={`${i}_${i}`} value={theme}>{theme}</option>
+                                                <option key={`${i}_${i}`} value={theme} className="bg-neutral">{theme}</option>
                                             )}
                                     </>
                                 </select>

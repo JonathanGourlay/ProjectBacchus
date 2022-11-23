@@ -213,6 +213,7 @@ namespace Net6SpaTemplate.BLL.Objects
         public List<string> mealType { get; set; }
         public List<string> dishType { get; set; }
         public TotalNutrients totalNutrients { get; set; }
+        public Nutrients nutrients { get; set; }
         public TotalDaily totalDaily { get; set; }
         public List<Digest> digest { get; set; }
     }
@@ -332,6 +333,43 @@ namespace Net6SpaTemplate.BLL.Objects
         public VITK1 VITK1 { get; set; }
     }
 
+    public class Nutrients
+    {
+        public String FAT { get; set; }
+        public String FASAT { get; set; }
+        public String FATRN { get; set; }
+        public String FAMS { get; set; }
+        public String FAPU { get; set; }
+        public String CHOCDF { get; set; }
+        public String CHOCDFnet { get; set; }
+        public String FIBTG { get; set; }
+        public String SUGAR { get; set; }
+        public String SUGARadded { get; set; }
+        public String PROCNT { get; set; }
+        public String CHOLE { get; set; }
+        public String NA { get; set; }
+        public String CA { get; set; }
+        public String MG { get; set; }
+        public String K { get; set; }
+        public String FE { get; set; }
+        public String ZN { get; set; }
+        public String P { get; set; }
+        public String VITA_RAE { get; set; }
+        public String VITC { get; set; }
+        public String THIA { get; set; }
+        public String RIBF { get; set; }
+        public String NIA { get; set; }
+        public String VITB6A { get; set; }
+        public String FOLDFE { get; set; }
+        public String FOLFD { get; set; }
+        public String FOLAC { get; set; }
+        public String VITB12 { get; set; }
+        public String VITD { get; set; }
+        public String TOCPHA { get; set; }
+        public String VITK1 { get; set; }
+        public String Sugaralcohol { get; set; }
+        public String WATER { get; set; }
+    }
     public class TotalNutrients
     {
         public ENERCKCAL ENERC_KCAL { get; set; }

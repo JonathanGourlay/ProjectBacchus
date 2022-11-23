@@ -37,20 +37,55 @@ namespace Net6SpaTemplate.BLL
             //    }
             //);
 
-            foreach (var recipe in recipeResponse.Hits.Take(4))
+            foreach (var recipe in recipeResponse.Hits.Take(6))
             {
+                var request = new RestRequest(recipe._links.Self.Href);
+                var resp = new Recipe()
                 {
-                    var request = new RestRequest(recipe._links.Self.Href);
-                    recipieList.Add(new Recipe()
-                    {
-                        Images = recipe.Recipe.Images.SMALL.Url,
-                        Recipie = await _client.GetAsync<RecipieResponse>(request)
+                    Images = recipe.Recipe.Images.SMALL.Url,
+                    Recipie = await _client.GetAsync<RecipieResponse>(request)
+                };
+                resp.Recipie.recipe.nutrients = new Nutrients
+                {
+                    FAT = (resp.Recipie.recipe.totalNutrients.FAT.quantity + resp.Recipie.recipe.totalNutrients.FAT.unit),
+                    FASAT = (resp.Recipie.recipe.totalNutrients.FASAT.quantity + resp.Recipie.recipe.totalNutrients.FASAT.unit),
+                    FATRN = (resp.Recipie.recipe.totalNutrients.FATRN.quantity + resp.Recipie.recipe.totalNutrients.FATRN.unit),
+                    FAMS = (resp.Recipie.recipe.totalNutrients.FAMS.quantity + resp.Recipie.recipe.totalNutrients.FAMS.unit),
+                    FAPU = (resp.Recipie.recipe.totalNutrients.FAPU.quantity + resp.Recipie.recipe.totalNutrients.FAPU.unit),
+                    CHOCDF = (resp.Recipie.recipe.totalNutrients.CHOCDF.quantity + resp.Recipie.recipe.totalNutrients.CHOCDF.unit),
+                    CHOCDFnet = (resp.Recipie.recipe.totalNutrients.CHOCDFnet.quantity + resp.Recipie.recipe.totalNutrients.CHOCDFnet.unit),
+                    FIBTG = (resp.Recipie.recipe.totalNutrients.FIBTG.quantity + resp.Recipie.recipe.totalNutrients.FIBTG.unit),
+                    SUGAR = (resp.Recipie.recipe.totalNutrients.SUGAR.quantity + resp.Recipie.recipe.totalNutrients.SUGAR.unit),
+                    SUGARadded = (resp.Recipie.recipe.totalNutrients.SUGARadded.quantity + resp.Recipie.recipe.totalNutrients.SUGARadded.unit),
+                    PROCNT = (resp.Recipie.recipe.totalNutrients.PROCNT.quantity + resp.Recipie.recipe.totalNutrients.PROCNT.unit),
+                    CHOLE = (resp.Recipie.recipe.totalNutrients.CHOLE.quantity + resp.Recipie.recipe.totalNutrients.CHOLE.unit),
+                    NA = (resp.Recipie.recipe.totalNutrients.NA.quantity + resp.Recipie.recipe.totalNutrients.NA.unit),
+                    CA = (resp.Recipie.recipe.totalNutrients.CA.quantity + resp.Recipie.recipe.totalNutrients.CA.unit),
+                    MG = (resp.Recipie.recipe.totalNutrients.MG.quantity + resp.Recipie.recipe.totalNutrients.MG.unit),
+                    K = (resp.Recipie.recipe.totalNutrients.K.quantity + resp.Recipie.recipe.totalNutrients.K.unit),
+                    FE = (resp.Recipie.recipe.totalNutrients.FE.quantity + resp.Recipie.recipe.totalNutrients.FE.unit),
+                    ZN = (resp.Recipie.recipe.totalNutrients.ZN.quantity + resp.Recipie.recipe.totalNutrients.ZN.unit),
+                    P = (resp.Recipie.recipe.totalNutrients.P.quantity + resp.Recipie.recipe.totalNutrients.P.unit),
+                    VITA_RAE = (resp.Recipie.recipe.totalNutrients.VITA_RAE.quantity + resp.Recipie.recipe.totalNutrients.VITA_RAE.unit),
+                    VITC = (resp.Recipie.recipe.totalNutrients.VITC.quantity + resp.Recipie.recipe.totalNutrients.VITC.unit),
+                    THIA = (resp.Recipie.recipe.totalNutrients.THIA.quantity + resp.Recipie.recipe.totalNutrients.THIA.unit),
+                    RIBF = (resp.Recipie.recipe.totalNutrients.RIBF.quantity + resp.Recipie.recipe.totalNutrients.RIBF.unit),
+                    NIA = (resp.Recipie.recipe.totalNutrients.NIA.quantity + resp.Recipie.recipe.totalNutrients.NIA.unit),
+                    VITB6A = (resp.Recipie.recipe.totalNutrients.VITB6A.quantity + resp.Recipie.recipe.totalNutrients.VITB6A.unit),
+                    FOLDFE = (resp.Recipie.recipe.totalNutrients.FOLDFE.quantity + resp.Recipie.recipe.totalNutrients.FOLDFE.unit),
+                    FOLFD = (resp.Recipie.recipe.totalNutrients.FOLFD.quantity + resp.Recipie.recipe.totalNutrients.FOLFD.unit),
+                    FOLAC = (resp.Recipie.recipe.totalNutrients.FOLAC.quantity + resp.Recipie.recipe.totalNutrients.FOLAC.unit),
+                    VITB12 = (resp.Recipie.recipe.totalNutrients.VITB12.quantity + resp.Recipie.recipe.totalNutrients.VITB12.unit),
+                    VITD = (resp.Recipie.recipe.totalNutrients.VITD.quantity + resp.Recipie.recipe.totalNutrients.VITD.unit),
+                    TOCPHA = (resp.Recipie.recipe.totalNutrients.TOCPHA.quantity + resp.Recipie.recipe.totalNutrients.TOCPHA.unit),
+                    VITK1 = (resp.Recipie.recipe.totalNutrients.VITK1.quantity + resp.Recipie.recipe.totalNutrients.VITK1.unit),
+                    Sugaralcohol = (resp.Recipie.recipe.totalNutrients.Sugaralcohol.quantity + resp.Recipie.recipe.totalNutrients.Sugaralcohol.unit),
+                    WATER = (resp.Recipie.recipe.totalNutrients.WATER.quantity + resp.Recipie.recipe.totalNutrients.WATER.unit)
 
-                    });
-                }
+                };
+                    recipieList.Add(resp);
             }
                 return recipieList;
-                //return recipeResponse;
         }
     }
 

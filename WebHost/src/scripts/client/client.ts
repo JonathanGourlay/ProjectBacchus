@@ -46,21 +46,21 @@ export class Client implements IClient {
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(Recipe.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return result200;
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                if (Array.isArray(resultData200)) {
+                    result200 = [] as any;
+                    for (let item of resultData200)
+                        result200!.push(Recipe.fromJS(item));
+                }
+                else {
+                    result200 = <any>null;
+                }
+                return result200;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
         return Promise.resolve<Recipe[]>(null as any);
@@ -171,6 +171,7 @@ export class Recipe2 implements IRecipe2 {
     mealType?: string[];
     dishType?: string[];
     totalNutrients?: TotalNutrients;
+    nutrients?: Nutrients;
     totalDaily?: TotalDaily;
     digest?: Digest[];
 
@@ -189,6 +190,7 @@ export class Recipe2 implements IRecipe2 {
                 }
             }
             this.totalNutrients = data.totalNutrients && !(<any>data.totalNutrients).toJSON ? new TotalNutrients(data.totalNutrients) : <TotalNutrients>this.totalNutrients;
+            this.nutrients = data.nutrients && !(<any>data.nutrients).toJSON ? new Nutrients(data.nutrients) : <Nutrients>this.nutrients;
             this.totalDaily = data.totalDaily && !(<any>data.totalDaily).toJSON ? new TotalDaily(data.totalDaily) : <TotalDaily>this.totalDaily;
             if (data.digest) {
                 this.digest = [];
@@ -254,6 +256,7 @@ export class Recipe2 implements IRecipe2 {
                     this.dishType!.push(item);
             }
             this.totalNutrients = _data["totalNutrients"] ? TotalNutrients.fromJS(_data["totalNutrients"]) : <any>undefined;
+            this.nutrients = _data["nutrients"] ? Nutrients.fromJS(_data["nutrients"]) : <any>undefined;
             this.totalDaily = _data["totalDaily"] ? TotalDaily.fromJS(_data["totalDaily"]) : <any>undefined;
             if (Array.isArray(_data["digest"])) {
                 this.digest = [] as any;
@@ -324,6 +327,7 @@ export class Recipe2 implements IRecipe2 {
                 data["dishType"].push(item);
         }
         data["totalNutrients"] = this.totalNutrients ? this.totalNutrients.toJSON() : <any>undefined;
+        data["nutrients"] = this.nutrients ? this.nutrients.toJSON() : <any>undefined;
         data["totalDaily"] = this.totalDaily ? this.totalDaily.toJSON() : <any>undefined;
         if (Array.isArray(this.digest)) {
             data["digest"] = [];
@@ -355,6 +359,7 @@ export interface IRecipe2 {
     mealType?: string[];
     dishType?: string[];
     totalNutrients?: ITotalNutrients;
+    nutrients?: INutrients;
     totalDaily?: ITotalDaily;
     digest?: IDigest[];
 }
@@ -2347,6 +2352,174 @@ export interface IWATER {
     label?: string;
     quantity?: number;
     unit?: string;
+}
+
+export class Nutrients implements INutrients {
+    fat?: string;
+    fasat?: string;
+    fatrn?: string;
+    fams?: string;
+    fapu?: string;
+    chocdf?: string;
+    chocdFnet?: string;
+    fibtg?: string;
+    sugar?: string;
+    sugaRadded?: string;
+    procnt?: string;
+    chole?: string;
+    na?: string;
+    ca?: string;
+    mg?: string;
+    k?: string;
+    fe?: string;
+    zn?: string;
+    p?: string;
+    vitA_RAE?: string;
+    vitc?: string;
+    thia?: string;
+    ribf?: string;
+    nia?: string;
+    vitB6A?: string;
+    foldfe?: string;
+    folfd?: string;
+    folac?: string;
+    vitB12?: string;
+    vitd?: string;
+    tocpha?: string;
+    vitK1?: string;
+    sugaralcohol?: string;
+    water?: string;
+
+    constructor(data?: INutrients) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fat = _data["fat"];
+            this.fasat = _data["fasat"];
+            this.fatrn = _data["fatrn"];
+            this.fams = _data["fams"];
+            this.fapu = _data["fapu"];
+            this.chocdf = _data["chocdf"];
+            this.chocdFnet = _data["chocdFnet"];
+            this.fibtg = _data["fibtg"];
+            this.sugar = _data["sugar"];
+            this.sugaRadded = _data["sugaRadded"];
+            this.procnt = _data["procnt"];
+            this.chole = _data["chole"];
+            this.na = _data["na"];
+            this.ca = _data["ca"];
+            this.mg = _data["mg"];
+            this.k = _data["k"];
+            this.fe = _data["fe"];
+            this.zn = _data["zn"];
+            this.p = _data["p"];
+            this.vitA_RAE = _data["vitA_RAE"];
+            this.vitc = _data["vitc"];
+            this.thia = _data["thia"];
+            this.ribf = _data["ribf"];
+            this.nia = _data["nia"];
+            this.vitB6A = _data["vitB6A"];
+            this.foldfe = _data["foldfe"];
+            this.folfd = _data["folfd"];
+            this.folac = _data["folac"];
+            this.vitB12 = _data["vitB12"];
+            this.vitd = _data["vitd"];
+            this.tocpha = _data["tocpha"];
+            this.vitK1 = _data["vitK1"];
+            this.sugaralcohol = _data["sugaralcohol"];
+            this.water = _data["water"];
+        }
+    }
+
+    static fromJS(data: any): Nutrients {
+        data = typeof data === 'object' ? data : {};
+        let result = new Nutrients();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fat"] = this.fat;
+        data["fasat"] = this.fasat;
+        data["fatrn"] = this.fatrn;
+        data["fams"] = this.fams;
+        data["fapu"] = this.fapu;
+        data["chocdf"] = this.chocdf;
+        data["chocdFnet"] = this.chocdFnet;
+        data["fibtg"] = this.fibtg;
+        data["sugar"] = this.sugar;
+        data["sugaRadded"] = this.sugaRadded;
+        data["procnt"] = this.procnt;
+        data["chole"] = this.chole;
+        data["na"] = this.na;
+        data["ca"] = this.ca;
+        data["mg"] = this.mg;
+        data["k"] = this.k;
+        data["fe"] = this.fe;
+        data["zn"] = this.zn;
+        data["p"] = this.p;
+        data["vitA_RAE"] = this.vitA_RAE;
+        data["vitc"] = this.vitc;
+        data["thia"] = this.thia;
+        data["ribf"] = this.ribf;
+        data["nia"] = this.nia;
+        data["vitB6A"] = this.vitB6A;
+        data["foldfe"] = this.foldfe;
+        data["folfd"] = this.folfd;
+        data["folac"] = this.folac;
+        data["vitB12"] = this.vitB12;
+        data["vitd"] = this.vitd;
+        data["tocpha"] = this.tocpha;
+        data["vitK1"] = this.vitK1;
+        data["sugaralcohol"] = this.sugaralcohol;
+        data["water"] = this.water;
+        return data;
+    }
+}
+
+export interface INutrients {
+    fat?: string;
+    fasat?: string;
+    fatrn?: string;
+    fams?: string;
+    fapu?: string;
+    chocdf?: string;
+    chocdFnet?: string;
+    fibtg?: string;
+    sugar?: string;
+    sugaRadded?: string;
+    procnt?: string;
+    chole?: string;
+    na?: string;
+    ca?: string;
+    mg?: string;
+    k?: string;
+    fe?: string;
+    zn?: string;
+    p?: string;
+    vitA_RAE?: string;
+    vitc?: string;
+    thia?: string;
+    ribf?: string;
+    nia?: string;
+    vitB6A?: string;
+    foldfe?: string;
+    folfd?: string;
+    folac?: string;
+    vitB12?: string;
+    vitd?: string;
+    tocpha?: string;
+    vitK1?: string;
+    sugaralcohol?: string;
+    water?: string;
 }
 
 export class TotalDaily implements ITotalDaily {
